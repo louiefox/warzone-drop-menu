@@ -1,8 +1,11 @@
 WZDM.CONFIG.Themes = {
     SlotTextColor = Color( 200, 200, 200 ),
     SlotTextOutlineColor = Color( 0, 0, 0 ),
-
     HoverColor = Color( 225, 159, 82 ),
+    WhiteText = Color( 255, 255, 255 ),
+    WhiteishText = Color( 245, 245, 245 ),
+    KeyText = Color( 0, 0, 0, 240 ),
+    HintText = Color( 200, 200, 200 ),
 }
 
 WZDM.CONFIG.MoneyDropAmount = 5000

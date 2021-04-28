@@ -74,9 +74,9 @@ hook.Add( "HUDPaint", "WZDM.Hooks.HUDPaint", function()
 		local pos2d = pos:ToScreen()
 
 		local x, y = pos2d.x, pos2d.y
-		local w, h = 500, 150
+		local w, h = WZDM.FUNC.ScreenScale( 500 ), WZDM.FUNC.ScreenScale( 150 )
 		
-		local topH = 35
+		local topH = WZDM.FUNC.ScreenScale( 35 )
 		local mainH = h-topH
 
 		surface.SetDrawColor( 0, 0, 0, 200 )
@@ -115,7 +115,7 @@ hook.Add( "HUDPaint", "WZDM.Hooks.HUDPaint", function()
 			return
 		end
 
-		local iconSize = 64
+		local iconSize = WZDM.FUNC.ScreenScale( 64 )
 		surface.SetMaterial( iconMat )
 		local iconX, iconY = x-(w/2)+(mainH/2)-(iconSize/2), y-(mainH/2)-(iconSize/2)
 
@@ -128,19 +128,19 @@ hook.Add( "HUDPaint", "WZDM.Hooks.HUDPaint", function()
 		surface.SetDrawColor( 200, 200, 200 )
 		surface.DrawTexturedRect( iconX, iconY, iconSize, iconSize )
 
-		draw.SimpleTextOutlined( topText, "WZDM_FontTooltipTop", x-(w/2)+mainH, y-(mainH/2), Color( 255, 255, 255 ), 0, TEXT_ALIGN_BOTTOM, 1, textOutline )
-		draw.SimpleTextOutlined( bottomText, "WZDM_FontTooltipBottom", x-(w/2)+mainH, y-(mainH/2), Color( 200, 200, 200 ), 0, 0, 1, textOutline )
+		draw.SimpleTextOutlined( topText, "WZDM_FontTooltipTop", x-(w/2)+mainH, y-(mainH/2), WZDM.CONFIG.Themes.WhiteText, 0, TEXT_ALIGN_BOTTOM, 1, textOutline )
+		draw.SimpleTextOutlined( bottomText, "WZDM_FontTooltipBottom", x-(w/2)+mainH, y-(mainH/2), WZDM.CONFIG.Themes.HintText, 0, 0, 1, textOutline )
 
 		if( type == "ammo" ) then
-			draw.SimpleTextOutlined( "x" .. string.Comma( ent:GetAmount() ), "WZDM_FontTooltipBigTxt", x+(w/2)-(mainH/2), y-(mainH/2), Color( 245, 245, 245 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, textOutline )
+			draw.SimpleTextOutlined( "x" .. string.Comma( ent:GetAmount() ), "WZDM_FontTooltipBigTxt", x+(w/2)-(mainH/2), y-(mainH/2), WZDM.CONFIG.Themes.WhiteishText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, textOutline )
 		end
 
 		-- Top Bar --
-		local keyH = topH-12
-		draw.RoundedBox( 8, x-(w/2)+10, y-h+(topH/2)-(keyH/2), keyH, keyH, Color( 255, 255, 255 ) )
+		local keyH = topH-WZDM.FUNC.ScreenScale( 12 )
+		draw.RoundedBox( WZDM.FUNC.ScreenScale( 8 ), x-(w/2)+WZDM.FUNC.ScreenScale( 10 ), y-h+(topH/2)-(keyH/2), keyH, keyH, WZDM.CONFIG.Themes.WhiteText )
 
-		draw.SimpleText( string.upper( input.LookupBinding( "+use" ) ), "WZDM_FontTooltipKey", x-(w/2)+10+(keyH/2)-1, y-h+(topH/2), Color( 0, 0, 0, 240 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
-		draw.SimpleTextOutlined( "Take", "WZDM_FontTooltipKeyTxt", x-(w/2)+10+keyH+10, y-h+(topH/2), Color( 200, 200, 200 ), 0, TEXT_ALIGN_CENTER, 1, textOutline )
+		draw.SimpleText( string.upper( input.LookupBinding( "+use" ) ), "WZDM_FontTooltipKey", x-(w/2)+WZDM.FUNC.ScreenScale( 10 )+(keyH/2)-1, y-h+(topH/2), WZDM.CONFIG.Themes.KeyText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		draw.SimpleTextOutlined( "Take", "WZDM_FontTooltipKeyTxt", x-(w/2)+WZDM.FUNC.ScreenScale( 10 )+keyH+WZDM.FUNC.ScreenScale( 10 ), y-h+(topH/2), WZDM.CONFIG.Themes.HintText, 0, TEXT_ALIGN_CENTER, 1, textOutline )
 	end
 end )
 

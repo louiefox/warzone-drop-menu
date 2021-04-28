@@ -34,6 +34,8 @@ end )
 
 util.AddNetworkString( "WZDM.Net.RequestDropMoney" )
 net.Receive( "WZDM.Net.RequestDropMoney", function( len, ply )
+    if( not DarkRP ) then return end
+
     if( CurTime() < (ply.WZDM_DROP_COOLDOWN or 0) ) then return end
     ply.WZDM_DROP_COOLDOWN = CurTime()+0.1
 
@@ -91,7 +93,7 @@ net.Receive( "WZDM.Net.RequestDropWeapon", function( len, ply )
     if( not IsValid( activeWeapon ) ) then return end
 
     local weaponClass, worldModel, clip1 = activeWeapon:GetClass(), activeWeapon:GetWeaponWorldModel(), activeWeapon:Clip1()
-    if( worldModel == "" or not hook.Run( "canDropWeapon", ply, activeWeapon ) ) then
+    if( worldModel == "" or (DarkRP and not hook.Run( "canDropWeapon", ply, activeWeapon )) ) then
         net.Start( "WZDM.Net.SendCantDropWeapon" )
         net.Send( ply )
         return

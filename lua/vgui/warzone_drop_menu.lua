@@ -13,15 +13,15 @@ function PANEL:Init()
     self.slotBottomH = select( 2, surface.GetTextSize( "$1,000" ) )+10
 
     self.slotW = self.slotH-self.slotBottomH-5
-    self.slotSpacing = 10
+    self.slotSpacing = WZDM.FUNC.ScreenScale( 10 )
 
     self.topInfo = vgui.Create( "DPanel", self )
     self.topInfo:Dock( TOP )
-    self.topInfo:SetTall( 50 )
+    self.topInfo:SetTall( WZDM.FUNC.ScreenScale( 50 ) )
     local leftMat, rightMat = Material( "wzdm/mouse_left.png" ), Material( "wzdm/mouse_right.png" )
     local leftW, rightW = 0, 0
     self.topInfo.DrawHint = function( mat, text, x, y ) 
-        local iconSize = 24
+        local iconSize = WZDM.FUNC.ScreenScale( 24 )
 
         surface.SetFont( "WZDM_FontBottom" )
         local textX = surface.GetTextSize( text )
@@ -60,7 +60,7 @@ function PANEL:Init()
 
     self.botttomInfo = vgui.Create( "DPanel", self )
     self.botttomInfo:Dock( BOTTOM )
-    self.botttomInfo:SetTall( 35 )
+    self.botttomInfo:SetTall( WZDM.FUNC.ScreenScale( 35 ) )
     self.botttomInfo.Paint = function( self2, w, h ) 
         surface.SetDrawColor( 50, 50, 50, 250 )
         surface.DrawRect( 0, 0, w, h )
@@ -71,13 +71,15 @@ function PANEL:Init()
     self.slotPanels = {}
     self:SetSize( 0, self.topInfo:GetTall()+self.slotRow:GetTall()+10+self.botttomInfo:GetTall() )
 
-    self:AddSlot( "Money", Material( "wzdm/dollar.png" ), "Drop " .. DarkRP.formatMoney( WZDM.CONFIG.MoneyDropAmount ), "Drop " .. DarkRP.formatMoney( WZDM.CONFIG.MoneyDropAllAmount ), function( rightClick )
-        net.Start( "WZDM.Net.RequestDropMoney" )
-            net.WriteBool( rightClick )
-        net.SendToServer()
-    end, function()
-        return DarkRP.formatMoney( LocalPlayer():getDarkRPVar( "money" ) )
-    end )
+    if( DarkRP ) then
+        self:AddSlot( "Money", Material( "wzdm/dollar.png" ), "Drop " .. DarkRP.formatMoney( WZDM.CONFIG.MoneyDropAmount ), "Drop " .. DarkRP.formatMoney( WZDM.CONFIG.MoneyDropAllAmount ), function( rightClick )
+            net.Start( "WZDM.Net.RequestDropMoney" )
+                net.WriteBool( rightClick )
+            net.SendToServer()
+        end, function()
+            return DarkRP.formatMoney( LocalPlayer():getDarkRPVar( "money" ) )
+        end )
+    end
 
     local defaultAmmoMat = Material( "wzdm/ammo_default.png" )
     for k, v in pairs( LocalPlayer():GetAmmo() ) do
@@ -150,6 +152,7 @@ function PANEL:AddSlot( displayText, icon, leftClickTxt, rightClickTxt, clickFun
     slotPanel.leftClickTxt = leftClickTxt
     slotPanel.rightClickTxt = rightClickTxt
     slotPanel.slotKey = slotKey
+    local iconSize = WZDM.FUNC.ScreenScale( 64 )
     slotPanel.Paint = function( self2, w, h )
         local topH = (getTextFunc and h-self.slotBottomH-5) or h
 
@@ -179,7 +182,6 @@ function PANEL:AddSlot( displayText, icon, leftClickTxt, rightClickTxt, clickFun
         if( icon ) then
             surface.SetDrawColor( 200, 200, 200 )
             surface.SetMaterial( icon )
-            local iconSize = 64
             surface.DrawTexturedRect( (w/2)-(iconSize/2), (topH/2)-(iconSize/2), iconSize, iconSize )
         end
 
