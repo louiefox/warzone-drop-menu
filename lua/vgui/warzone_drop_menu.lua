@@ -95,7 +95,10 @@ function PANEL:Init()
     end
 
     local weaponSlot = self:AddSlot( function() 
-        return LocalPlayer():GetActiveWeapon():GetPrintName()
+        local weapon = LocalPlayer():GetActiveWeapon()
+        if( not IsValid( weapon ) ) then return "Empty" end
+
+        return weapon:GetPrintName()
     end, false, "Drop Weapon", false, function()
         net.Start( "WZDM.Net.RequestDropWeapon" )
         net.SendToServer()
