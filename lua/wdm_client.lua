@@ -4,19 +4,37 @@ function WZDM.FUNC.CreateMenu( parent )
     end
 
     WARZONE_DROP_MENU = (parent and parent:Add( "warzone_drop_menu" )) or vgui.Create( "warzone_drop_menu" )
+
+    gui.EnableScreenClicker( true )
 end
 
 function WZDM.FUNC.HideMenu()
     if( IsValid( WARZONE_DROP_MENU ) )  then
         WARZONE_DROP_MENU:Remove()
     end
+
+    gui.EnableScreenClicker( false )
 end
 
--- hook.Add( "ScoreboardShow", "WZDM.Hooks.ScoreboardShow", WZDM.FUNC.CreateMenu )
--- hook.Add( "ScoreboardHide", "WZDM.Hooks.ScoreboardHide", WZDM.FUNC.HideMenu )
+hook.Add( "OnContextMenuOpen", "WZDM.Hooks.OnContextMenuOpen", function() 
+    if( WZDM.CONFIG.MenuKey != "context" ) then return end
+    WZDM.FUNC.CreateMenu( g_ContextMenu ) 
+end )
 
-hook.Add( "OnContextMenuOpen", "WZDM.Hooks.OnContextMenuOpen", function() WZDM.FUNC.CreateMenu( g_ContextMenu ) end )
-hook.Add( "OnContextMenuClose", "WZDM.Hooks.OnContextMenuClose", WZDM.FUNC.HideMenu )
+hook.Add( "OnContextMenuClose", "WZDM.Hooks.OnContextMenuClose", function()
+    if( WZDM.CONFIG.MenuKey != "context" ) then return end
+    WZDM.FUNC.HideMenu()
+end )
+
+hook.Add( "PlayerButtonDown", "WZDM.Hooks.PlayerButtonDown", function( ply, button ) 
+    if( WZDM.CONFIG.MenuKey != button or IsValid( WARZONE_DROP_MENU ) ) then return end
+    WZDM.FUNC.CreateMenu() 
+end )
+
+hook.Add( "PlayerButtonUp", "WZDM.Hooks.PlayerButtonUp", function( ply, button ) 
+    if( WZDM.CONFIG.MenuKey != button or not IsValid( WARZONE_DROP_MENU ) ) then return end
+    WZDM.FUNC.HideMenu()
+end )
 
 local function CreateFonts()
     surface.CreateFont( "WZDM_FontBottom", {

@@ -8,6 +8,8 @@ WZDM.CONFIG.Themes = {
     HintText = Color( 200, 200, 200 ),
 }
 
+WZDM.CONFIG.MenuKey = "context" -- Options: "context" or any key from this list https://wiki.facepunch.com/gmod/Enums/KEY, dont include the "", e.g. MenuKey = KEY_B.
+
 WZDM.CONFIG.MoneyDropAmount = 5000
 WZDM.CONFIG.MoneyDropAllAmount = 50000
 

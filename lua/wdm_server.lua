@@ -18,7 +18,7 @@ net.Receive( "WZDM.Net.RequestPickup", function( len, ply )
         ply:GiveAmmo( amount, typeInfo )
     elseif( type == "weapon" ) then
         local weapon = ply:Give( typeInfo, true )
-        if( ammo ) then
+        if( ammo and IsValid( weapon ) ) then
             weapon:SetClip1( ammo )
         end
  
