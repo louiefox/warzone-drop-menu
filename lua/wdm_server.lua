@@ -12,8 +12,9 @@ net.Receive( "WZDM.Net.RequestPickup", function( len, ply )
     local type, typeInfo, amount, ammo = ent:GetType(), ent:GetTypeInfo(), ent:GetAmount(), ent.ammo
     ent:Remove()
 
-    if( type == "cash" ) then
-        ply:addMoney( amount )
+    local currency = WZDM.FUNC.GetCurrency()
+    if( type == "cash" and currency ) then
+        currency.Add( ply, amount )
     elseif( type == "ammo" ) then
         ply:GiveAmmo( amount, typeInfo )
     elseif( type == "weapon" ) then
@@ -34,7 +35,8 @@ end )
 
 util.AddNetworkString( "WZDM.Net.RequestDropMoney" )
 net.Receive( "WZDM.Net.RequestDropMoney", function( len, ply )
-    if( not DarkRP ) then return end
+    local currency = WZDM.FUNC.GetCurrency()
+    if( not currency ) then return end
 
     if( CurTime() < (ply.WZDM_DROP_COOLDOWN or 0) ) then return end
     ply.WZDM_DROP_COOLDOWN = CurTime()+0.1
@@ -42,11 +44,11 @@ net.Receive( "WZDM.Net.RequestDropMoney", function( len, ply )
     local rightClick = net.ReadBool()
 
     local dropAmount = (rightClick and WZDM.CONFIG.MoneyDropAllAmount) or WZDM.CONFIG.MoneyDropAmount
-    dropAmount = math.Clamp( dropAmount, 0, ply:getDarkRPVar( "money" ) )
+    dropAmount = math.Clamp( dropAmount, 0, currency.Get( ply ) )
 
     if( dropAmount <= 0 ) then return end
 
-    ply:addMoney( -dropAmount )
+    currency.Take( ply, dropAmount )
 
     local ent = ents.Create( "wzdm_dropent" )
     ent:SetPos( ply:GetPos()+(ply:GetForward()*45) )

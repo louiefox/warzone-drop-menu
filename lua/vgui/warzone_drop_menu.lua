@@ -71,13 +71,14 @@ function PANEL:Init()
     self.slotPanels = {}
     self:SetSize( 0, self.topInfo:GetTall()+self.slotRow:GetTall()+10+self.botttomInfo:GetTall() )
 
-    if( DarkRP ) then
-        self:AddSlot( "Money", Material( "wzdm/dollar.png" ), "Drop " .. DarkRP.formatMoney( WZDM.CONFIG.MoneyDropAmount ), "Drop " .. DarkRP.formatMoney( WZDM.CONFIG.MoneyDropAllAmount ), function( rightClick )
+    local currency = WZDM.FUNC.GetCurrency()
+    if( currency ) then
+        self:AddSlot( "Money", Material( "wzdm/dollar.png" ), "Drop " .. currency.Format( WZDM.CONFIG.MoneyDropAmount ), "Drop " .. currency.Format( WZDM.CONFIG.MoneyDropAllAmount ), function( rightClick )
             net.Start( "WZDM.Net.RequestDropMoney" )
                 net.WriteBool( rightClick )
             net.SendToServer()
         end, function()
-            return DarkRP.formatMoney( LocalPlayer():getDarkRPVar( "money" ) )
+            return currency.Format( currency.Get( LocalPlayer() ) )
         end )
     end
 

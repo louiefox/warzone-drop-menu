@@ -101,7 +101,7 @@ hook.Add( "HUDPaint", "WZDM.Hooks.HUDPaint", function()
 		local iconMat, topText, bottomText
 		if( type == "cash" ) then
 			iconMat = dollarMat
-			topText = DarkRP.formatMoney( ent:GetAmount() )
+			topText = WZDM.FUNC.GetCurrency().Format( ent:GetAmount() )
 			bottomText = "Cash"
 		elseif( type == "ammo" ) then
 			iconMat = WZDM.CONFIG.AmmoIcons[typeInfo] or defaultAmmoMat

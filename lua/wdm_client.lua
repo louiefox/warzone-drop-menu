@@ -100,8 +100,8 @@ net.Receive( "WZDM.Net.SendPickup", function()
     local typeInfo = net.ReadString()
     local amount = net.ReadUInt( 32 )
 
-    if( type == "cash" ) then
-        notification.AddLegacy( "You picked up " .. DarkRP.formatMoney( amount ) .. " from the ground!", 0, 3 )
+    if( type == "cash" and WZDM.FUNC.GetCurrency() ) then
+        notification.AddLegacy( "You picked up " .. WZDM.FUNC.GetCurrency().Format( amount ) .. " from the ground!", 0, 3 )
     elseif( type == "ammo" ) then
         notification.AddLegacy( "You picked up x" .. string.Comma( amount ) .. " " .. (WZDM.CONFIG.AmmoNames[typeInfo] or typeInfo) .. " from the ground!", 0, 3 )
     end
